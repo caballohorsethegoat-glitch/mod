@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "creeperpastel",
+  "version": "${version}",
+  "name": "Creeper Pastel",
+  "description": "Agrega el Creeper Pastel, un creeper con forma de pastel.",
+  "authors": ["Tu nombre"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.creeperpastel.CreeperPastelMod"],
+    "client": ["com.creeperpastel.client.CreeperPastelClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
