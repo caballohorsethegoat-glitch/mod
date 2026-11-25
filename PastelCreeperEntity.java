@@ -6,6 +6,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 
 /**
@@ -25,6 +27,11 @@ public class PastelCreeperEntity extends CreeperEntity {
         if (!getWorld().isClient && reason == RemovalReason.DISCARDED
                 && (isIgnited() || getFuseSpeed() > 0)
                 && getWorld() instanceof ServerWorld sw) {
+            // Sonido "de pastel": chapoteo blando + miel pegajosa, encima de la explosion
+            sw.playSound(null, getX(), getY(), getZ(), SoundEvents.ENTITY_SLIME_SQUISH,
+                    SoundCategory.HOSTILE, 2.0f, 0.7f);
+            sw.playSound(null, getX(), getY(), getZ(), SoundEvents.BLOCK_HONEY_BLOCK_BREAK,
+                    SoundCategory.HOSTILE, 2.0f, 0.6f);
             for (ServerPlayerEntity p : sw.getPlayers()) {
                 double d = p.distanceTo(this);
                 if (d <= SPLAT_RANGE) {
