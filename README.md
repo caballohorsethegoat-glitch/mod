@@ -21,3 +21,7 @@ Mod de Fabric con el Creeper Pastel (modelo de Blockbench, textura incluida).
 1. Crea un repo en github.com y sube todo el contenido de esta carpeta (incluida `.github`).
 2. Ve a la pestana Actions -> "build" -> espera a que termine (unos 5 min).
 3. Descarga el artefacto `creeper-pastel-mod` -> dentro esta el `.jar` (usa el que NO termina en `-sources`).
+
+## Mancha de pantalla
+Al explotar el Creeper Pastel, los jugadores a menos de 16 bloques ven trozos de pastel en la pantalla (~6 s, se desvanece).
+Usa `textures/gui/splat1.png` y `splat2.png` (de pastel.png / pastel1.png del pack).

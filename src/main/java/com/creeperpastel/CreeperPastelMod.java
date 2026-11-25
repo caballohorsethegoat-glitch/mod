@@ -1,7 +1,9 @@
 package com.creeperpastel;
 
 import com.creeperpastel.entity.PastelCreeperEntity;
+import com.creeperpastel.network.SplatPayload;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -42,6 +44,8 @@ public class CreeperPastelMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        PayloadTypeRegistry.playS2C().register(SplatPayload.ID, SplatPayload.CODEC);
+
         FabricDefaultAttributeRegistry.register(CREEPER_PASTEL, PastelCreeperEntity.createCreeperAttributes());
 
         SpawnRestriction.register(CREEPER_PASTEL, SpawnLocationTypes.ON_GROUND,
