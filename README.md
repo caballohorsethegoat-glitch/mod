@@ -25,3 +25,11 @@ Mod de Fabric con el Creeper Pastel (modelo de Blockbench, textura incluida).
 ## Mancha de pantalla
 Al explotar el Creeper Pastel, los jugadores a menos de 16 bloques ven trozos de pastel en la pantalla (~6 s, se desvanece).
 Usa `textures/gui/splat1.png` y `splat2.png` (de pastel.png / pastel1.png del pack).
+
+## Dron
+- Entidad `creeperpastel:dron` (huevo generador en la pestana de huevos). No aparece solo: se invoca con el huevo o `/summon creeperpastel:dron`.
+- Zumbido de dron en bucle cuando esta cerca (16 bloques). Las helices giran.
+- Detecta jugadores en supervivencia/aventura (hasta 24 bloques), se acerca hasta ~5 bloques y flota.
+- A menos de ~8.5 bloques y con linea de vision te agarra: la camara queda bloqueada mirandolo.
+- Aparece una tecla ESPACIO animada y una barra: pulsa ESPACIO repetidamente para llenarla (la barra baja sola si paras).
+- Al liberarte el dron huye ~20 s y luego vuelve.

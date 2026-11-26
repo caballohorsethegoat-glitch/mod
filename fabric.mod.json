@@ -7,6 +7,9 @@
   "authors": ["Tu nombre"],
   "license": "MIT",
   "environment": "*",
+  "mixins": [
+    { "config": "creeperpastel.client.mixins.json", "environment": "client" }
+  ],
   "entrypoints": {
     "main": ["com.creeperpastel.CreeperPastelMod"],
     "client": ["com.creeperpastel.client.CreeperPastelClient"]

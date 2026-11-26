@@ -1,6 +1,12 @@
 package com.creeperpastel;
 
+import com.creeperpastel.entity.DroneEntity;
 import com.creeperpastel.entity.PastelCreeperEntity;
+import com.creeperpastel.network.EscapePayload;
+import com.creeperpastel.network.LockPayload;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.Box;
 import com.creeperpastel.network.SplatPayload;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -38,13 +44,40 @@ public class CreeperPastelMod implements ModInitializer {
             id("creeper_pastel_spawn_egg"),
             new SpawnEggItem(CREEPER_PASTEL, 0xFFFFFF, 0xFFFFFF, new Item.Settings()));
 
+    public static final EntityType<DroneEntity> DRON = Registry.register(
+            Registries.ENTITY_TYPE,
+            id("dron"),
+            EntityType.Builder.create(DroneEntity::new, SpawnGroup.MONSTER)
+                    .dimensions(1.0f, 0.7f)
+                    .maxTrackingRange(10)
+                    .build("dron"));
+
+    public static final Item DRON_SPAWN_EGG = Registry.register(
+            Registries.ITEM,
+            id("dron_spawn_egg"),
+            new SpawnEggItem(DRON, 0xFFFFFF, 0xFFFFFF, new Item.Settings()));
+
     public static Identifier id(String path) {
         return Identifier.of(MOD_ID, path);
     }
 
     @Override
     public void onInitialize() {
+        ModSounds.init();
         PayloadTypeRegistry.playS2C().register(SplatPayload.ID, SplatPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(LockPayload.ID, LockPayload.CODEC);
+        PayloadTypeRegistry.playC2S().register(EscapePayload.ID, EscapePayload.CODEC);
+
+        FabricDefaultAttributeRegistry.register(DRON, DroneEntity.createDroneAttributes());
+
+        // El jugador lleno la barra: el dron (o drones) que lo tienen agarrado lo sueltan y huyen
+        ServerPlayNetworking.registerGlobalReceiver(EscapePayload.ID, (payload, context) -> {
+            ServerPlayerEntity player = context.player();
+            Box box = player.getBoundingBox().expand(40.0);
+            for (DroneEntity d : player.getServerWorld().getEntitiesByClass(DroneEntity.class, box, e -> e.isGrabbing(player))) {
+                d.releasePlayer(true);
+            }
+        });
 
         FabricDefaultAttributeRegistry.register(CREEPER_PASTEL, PastelCreeperEntity.createCreeperAttributes());
 
@@ -54,6 +87,6 @@ public class CreeperPastelMod implements ModInitializer {
         // Aparece en el Overworld como un mob hostil mas (peso, grupo min, grupo max)
         BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), SpawnGroup.MONSTER, CREEPER_PASTEL, 20, 1, 2);
 
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(e -> e.add(CREEPER_PASTEL_SPAWN_EGG));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(e -> { e.add(CREEPER_PASTEL_SPAWN_EGG); e.add(DRON_SPAWN_EGG); });
     }
 }

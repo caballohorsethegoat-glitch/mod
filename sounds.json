@@ -1,0 +1,7 @@
+{
+  "drone_loop": {
+    "sounds": [
+      { "name": "creeperpastel:drone_loop", "stream": false }
+    ]
+  }
+}
